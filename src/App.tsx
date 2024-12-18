@@ -1,35 +1,83 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { useEffect } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    const handleSmoothScroll = (event: Event) => {
+      event.preventDefault();
+      const targetId = (event.target as HTMLAnchorElement)
+        .getAttribute("href")
+        ?.substring(1);
+      const targetElement = document.getElementById(targetId!);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+
+    const navLinks = document.querySelectorAll("nav ul li a");
+    navLinks.forEach((link) =>
+      link.addEventListener("click", handleSmoothScroll)
+    );
+
+    return () => {
+      navLinks.forEach((link) =>
+        link.removeEventListener("click", handleSmoothScroll)
+      );
+    };
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+    <div id="root">
+      <header>
+        <nav>
+          <ul>
+            <li>
+              <a href="#about">About</a>
+            </li>
+            <li>
+              <a href="#skills">Skills</a>
+            </li>
+            <li>
+              <a href="#projects">Projects</a>
+            </li>
+          </ul>
+        </nav>
+        <h1>Fabian's Portfolio</h1>
+        <p>Welcome to my personal portfolio website!</p>
+      </header>
+      <section id="about">
+        <h2>About Me</h2>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          Hi, I'm Fabian, a passionate software developer with experience in
+          building web applications using modern technologies.
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      </section>
+      <section id="skills">
+        <h2>Skills</h2>
+        <ul>
+          <li>JavaScript</li>
+          <li>TypeScript</li>
+          <li>React</li>
+          <li>Node.js</li>
+          <li>CSS</li>
+        </ul>
+      </section>
+      <section id="projects">
+        <h2>Projects</h2>
+        <div className="project-card">
+          <h3>Project 1</h3>
+          <p>Description of project 1.</p>
+        </div>
+        <div className="project-card">
+          <h3>Project 2</h3>
+          <p>Description of project 2.</p>
+        </div>
+      </section>
+      <footer>
+        <p>© 2023 Fabian Rauschert. All rights reserved.</p>
+      </footer>
+    </div>
+  );
 }
 
-export default App
+export default App;
